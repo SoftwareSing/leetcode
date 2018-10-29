@@ -26,13 +26,17 @@ var removeNthFromEnd = function(head, n) {
 };
 
 function visitNode(node, recordNodeNumber, recordList) {
+  while (node.next) {
+    recordNode(node, recordNodeNumber, recordList);
+    node = node.next;
+  }
+  recordNode(node, recordNodeNumber, recordList);
+}
+
+function recordNode(node, recordNodeNumber, recordList) {
   recordList.push(node);
   if (recordList.length > recordNodeNumber) {
     recordList.shift();
-  }
-
-  if (node.next) {
-    visitNode(node.next, recordNodeNumber, recordList);
   }
 }
 
