@@ -11,43 +11,42 @@
  * @return {ListNode}
  */
 var removeNthFromEnd = function(head, n) {
-  const recordList = [];
-  const recordNodeNumber = n + 1;
-  visitNode(head, recordNodeNumber, recordList);
-  if (isRemoveHead(recordList, recordNodeNumber)) {
+  const recorder = { node: head, count: 0 };
+  const recordDelayNumber = n + 1;
+  const record = () => {
+    recorder.count += 1;
+    if (recorder.count > recordDelayNumber) {
+      recorder.node = recorder.node.next;
+    }
+  };
+  visitNode(head, record);
+
+  if (isRemoveHead(recorder, recordDelayNumber)) {
     // 表示應被刪的是head, 需要額外處理
-    head = head.next;
+    return head.next;
   }
-  else {
-    changeLinkedNode(recordList, recordNodeNumber);
-  }
+
+  changeLinkedNode(recorder);
 
   return head;
 };
 
-function visitNode(node, recordNodeNumber, recordList) {
+function visitNode(node, callback) {
   while (node.next) {
-    recordNode(node, recordNodeNumber, recordList);
+    callback();
     node = node.next;
   }
-  recordNode(node, recordNodeNumber, recordList);
+  callback();
 }
 
-function recordNode(node, recordNodeNumber, recordList) {
-  recordList.push(node);
-  if (recordList.length > recordNodeNumber) {
-    recordList.shift();
-  }
-}
-
-function isRemoveHead(recordList, recordNodeNumber) {
-  if (recordList.length < recordNodeNumber) {
+function isRemoveHead(recorder, recordDelayNumber) {
+  if (recorder.count < recordDelayNumber) {
     return true;
   }
 
   return false;
 }
 
-function changeLinkedNode(recordList, recordNodeNumber) {
-  recordList[0].next = recordList[2];
+function changeLinkedNode(recorder) {
+  recorder.node.next = recorder.node.next.next;
 }
