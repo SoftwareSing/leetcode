@@ -12,8 +12,10 @@ const relativeSortArray = function(arr1, arr2) {
 
   const result = [];
   for (const value of arr2) {
-    const count = a1Map.get(value) || 0;
-    result.push(...(new Array(count)).fill(value));
+    const count = a1Map.get(value);
+    if (count) {
+      pushValue(result, value, count);
+    }
     a1Map.delete(value);
   }
   [...a1Map.keys()]
@@ -22,8 +24,16 @@ const relativeSortArray = function(arr1, arr2) {
     })
     .forEach((value) => {
       const count = a1Map.get(value);
-      result.push(...(new Array(count)).fill(value));
+      pushValue(result, value, count);
     });
 
   return result;
 };
+
+function pushValue(array, value, count) {
+  for (let i = 0; i < count; i += 1) {
+    array.push(value);
+  }
+
+  return array;
+}
