@@ -4,6 +4,8 @@
  * @return {number[]}
  */
 const relativeSortArray = function(arr1, arr2) {
+  // 理論上為 O(N) ?
+
   const a1Map = new Map();
   for (const value of arr1) {
     const count = a1Map.get(value);
@@ -18,14 +20,10 @@ const relativeSortArray = function(arr1, arr2) {
     }
     a1Map.delete(value);
   }
-  [...a1Map.keys()]
-    .sort((a, b) => {
-      return a - b;
-    })
-    .forEach((value) => {
-      const count = a1Map.get(value);
-      pushValue(result, value, count);
-    });
+
+  countingSort(a1Map).forEach((count, value) => {
+    pushValue(result, value, count);
+  });
 
   return result;
 };
@@ -36,4 +34,13 @@ function pushValue(array, value, count) {
   }
 
   return array;
+}
+
+function countingSort(a1Map) {
+  const result = [];
+  for (const [value, count] of a1Map.entries()) {
+    result[value] = count;
+  }
+
+  return result;
 }
