@@ -26,15 +26,13 @@ const longestPalindrome = function(s) {
       for (let j = aIndexList.length - 1; j > i; j -= 1) {
         const start = aIndexList[i];
         const end = aIndexList[j];
-        if (start > answerStart && end < answerEnd) {
+        if (end - start <= answerEnd - answerStart) {
           break;
         }
 
         if (isPalindromic(s, start, end)) {
-          if (end - start > answerEnd - answerStart) {
-            answerStart = start;
-            answerEnd = end;
-          }
+          answerStart = start;
+          answerEnd = end;
         }
       }
     }
