@@ -40,7 +40,10 @@ var threeSum = function(nums) {
       }
 
       const threeNum = 0 - twoSum
-      if (threeNum > numI || threeNum < numJ) {
+      if (threeNum < numJ) {
+        break
+      }
+      if (threeNum > numI) {
         continue
       }
 
