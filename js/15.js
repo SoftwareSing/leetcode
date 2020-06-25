@@ -14,14 +14,18 @@ var threeSum = function(nums) {
     min = Math.min(min, num)
   }
 
-  const sortNums = []
-  for (let num = min; num <= max; num += 1) {
-    if (numMap.has(num)) {
-      sortNums.push(num)
+  let sortNums = []
+  if (max - min < numMap.size ** 2) {
+    for (let num = min; num <= max; num += 1) {
+      if (numMap.has(num)) {
+        sortNums.push(num)
+      }
     }
+  } else {
+    sortNums = [...numMap.keys()].sort()
   }
 
-  const result = new Set()
+  const result = []
   for (let i = sortNums.length - 1; i >= 0; i -= 1) {
     const numI = sortNums[i]
     if (numI < 0) {
@@ -36,7 +40,7 @@ var threeSum = function(nums) {
       }
 
       const threeNum = 0 - twoSum
-      if (threeNum > numI) {
+      if (threeNum > numI || threeNum < numJ) {
         continue
       }
 
@@ -45,13 +49,11 @@ var threeSum = function(nums) {
         continue
       }
 
-      const answer = [numJ, numI, threeNum].sort()
-      result.add(JSON.stringify(answer))
+      const answer = [numJ, threeNum, numI]
+      result.push(answer)
     }
   }
 
 
-  return [...result.values()].map((str) => {
-    return JSON.parse(str)
-  })
+  return result
 }
